@@ -1,11 +1,11 @@
-<form id="cadastro_resposta">
+<form id="cadastro_resposta" method="POST" action="/cadastrar">
 
 <div class="input-group mb-3">
-  <input type="text" class="form-control" aria-label="Default" name="keyword" placeholder="Buscar palavras chave para atribuir a resposta" aria-describedby="inputGroup-sizing-default">
+  <input type="text" class="form-control" aria-label="Default" name="chave" placeholder="Buscar palavras chave para atribuir a resposta" aria-describedby="inputGroup-sizing-default">
 </div>
 
 <div class="input-group mb-3">
   <input type="text" class="form-control" aria-label="Default" name="resposta" placeholder="Cadastrar resposta para as chaves escolhidas" aria-describedby="inputGroup-sizing-default">
 </div>
-<button type="submit" onclick="window.location='http://localhost:8081/'">Cadastrar</button>
+<button type="submit">Cadastrar</button>
 </form>
