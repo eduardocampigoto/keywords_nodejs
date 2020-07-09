@@ -2,13 +2,13 @@
 <form id="buscar_respostas">
 
 <div class="input-group mb-3">
-  <input  id="formbuscachave" type="text" class="form-control" aria-label="Default" name="keyword" placeholder="Buscar palavras chave para atribuir a resposta" aria-describedby="inputGroup-sizing-default">
+  <input  id="formbuscachave" type="text" class="form-control" aria-label="Default" name="chave" placeholder="Buscar palavras chave para atribuir a resposta" aria-describedby="inputGroup-sizing-default">
 </div>
-<button type="submit" onclick="getChaves()">Buscar</button>
+<button type="submit" action="/buscarresposta" method="GET">Buscar</button>
 </form>
 
 {{#each chaves}}
-<h2> {{this.keyword}} </h2>
-<h2> {{this.response}} </h2>
+<h2> {{keyword}} </h2>
+<h2> {{response}} </h2>
 <hr>
 {{/each}}
