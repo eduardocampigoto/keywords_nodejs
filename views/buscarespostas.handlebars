@@ -1,10 +1,11 @@
 <h1>Buscar Resposta para palavras chaves:</h1>
-<form id="buscar_respostas">
+<form id="buscar_respostas" action="/buscarrespostas" method="GET">
 
-<div class="input-group mb-3">
-  <input  id="formbuscachave" type="text" class="form-control" aria-label="Default" name="chave" placeholder="Buscar palavras chave para atribuir a resposta" aria-describedby="inputGroup-sizing-default">
-</div>
-<button type="submit" action="/buscarresposta" method="GET">Buscar</button>
+  <div class="input-group mb-3">
+    <input id="formbuscachave" type="text" class="form-control" aria-label="Default" name="chave"
+      placeholder="Buscar palavras chave para atribuir a resposta" aria-describedby="inputGroup-sizing-default">
+  </div>
+  <button type="submit">Buscar</button>
 </form>
 
 {{#each chaves}}

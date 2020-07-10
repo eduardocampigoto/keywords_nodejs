@@ -6,6 +6,7 @@ const http = require('http');
 const request = require('request');
 const fetch = require('node-fetch');
 const { debug } = require('console');
+const { contains } = require('jquery');
 //const bootstrap = require('bootstrap');
 //Express
 const app = express();
@@ -31,7 +32,7 @@ function getchaves() {
 
     fetch(reqst, settings)
         .then(res => res.json())
-        .then((chaves) => {
+        .then((consultaRet) => {
             res.render('buscarespostas', { chaves: chaves });
             console.log(chaves);
         });
@@ -51,33 +52,40 @@ app.get("/", function (req, res) {
         
         fetch(reqst, settings)
             .then(res => res.json())
-            .then((chaves) => {
+            .then((consultaRet) => {
                 res.render('home', { chaves: chaves });
-                console.log(chaves);
+                //console.log(chaves);
             });
     }
 })
 
-app.get("/palavraschave", function (req, res) {
+app.get("/buscapalavraschave", function (req, res) {
     const titulo = `Palavras chave`;
-    let chaves = req.body.chaves;
-    let reqst = `${BASE_API}/palavra-chave?chave=${chaves}`;
-    let settings = { method: "Get" };
+    let chaves = req.body.chave;
+    //console.log(chaves);
+    let reqst = `${BASE_API}/resposta?chave=${chaves}`;
+    let settings = { method: "GET" };
     fetch(reqst, settings)
         .then(res => res.json())
-        .then((chaves) => {
-            res.render('home', { chaves: chaves, titulo} );
-            console.log(chaves);
+        .then((consultaRet) => {
+            let chaves = consultaRet;
+                res.render('home', { chaves: chaves, titulo} );
+                
+            
+        //        res.render('home', { "Nenhum resultado encontrado": chaves, titulo} );
+        
+            //console.log(chaves);
         });
+
 })
 
-app.get("/cadrespostas", function (req, res) {
+app.get("/cadastrarrespostas", function (req, res) {
     const titulo = `Integrar respostas e palavras chave`;
     let chaves = req.body.chaves;
-    res.render('cadastrarrespostas', { chaves: chaves, titulo });
+    res.render('cadastroRespostas', { consultaRet: chaves, titulo });
 })
 
-app.post("/cadastrar", function (req, res) {
+app.post("/executacadastrorespostas", function (req, res) {
     const titulo = `Integrar respostas e palavras chave`;
     let chave = req.body.chave;
     let resposta = req.body.resposta;
@@ -93,30 +101,45 @@ app.post("/cadastrar", function (req, res) {
 })
 
 app.get("/buscarespostas", function (req, res) {
-    
     const titulo = `Buscar respostas`;
-    
-    let chave = req.body.chave;
-
-    res.render('buscarespostas', { chave: chave, titulo });
+    res.render('buscarespostas', { titulo });
 })
 
-app.get("/buscarresposta", function (req, res) {
-    let chave = req.body.chave;
-    console.log("chave");
-        let reqst = `${BASE_API}/resposta?chave=${chave}`;
-        let settings = { method: "Get" };
+app.get("/buscarrespostas", function (req, res) {
+    
+    // quando usa GET, pega parametro via req.query.nomeparametro
+    // quando usa POST, pega parametro via req.body.nomeparametro (se vier do form) 
+    // e req.query.nomeparametro se viar via querystring (acho que eh isso)
+    var chave = req.query.chave;
+    console.log(`busca resposta: ${chave}`);
+        let reqst = `${BASE_API}/resposta/${chave}`;
+        console.log(reqst);
+        let settings = { method: "GET" };
         fetch(reqst, settings)
             .then(res => res.json())
-            .then((chaves) => {
-                console.log(chaves);
-                res.render('buscarespostas', { chaves: chaves });
-
+            .then((consultaRet) => {
+                let chaves = consultaRet;
+                res.render('buscarespostas', { chaves : chaves });
             }); 
-
 })
 
+app.get("/cadastrarkeyword", function (req, res) {
+    const titulo = `Cadastrar palavras chave`;
+    let chaves = req.body.chaves;
+    res.render('cadastroPalavrasChave', { consultaRet: chaves, titulo });
+})
 
+app.post("/executarcadkeyword", function (req, res) {
+    const titulo = `Cadastrar palavras`;
+    let chave = req.body.chave;
+    let resposta = req.body.resposta;
+    let reqst = `${BASE_API}/palavra-chave?chave=${chave}`
+    let settings = {method:'POST'};
+    fetch(reqst,settings)
+        .then(res => res.json())
+        .then(res.render("buscarespostas", { chave: chave, titulo }))
+    //console.log(` Chave: ${chave}`);
+})
 
 app.listen(8081, function () {
     console.log(`------------------------------------
