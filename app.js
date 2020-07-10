@@ -23,57 +23,44 @@ app.use(bodyparser.json());
 const BASE_API = "http://localhost:8080/api";
 
 
-/*let chaves = [];
-function getchaves() {
-    var chaves = document.getElementById("formbuscachave");
-    var reqst = BASE_API + "resposta?chave=" + chaves;
-    let settings = { method: "Get" };
-    console.log(chaves);
-
-    fetch(reqst, settings)
+app.get("/", function (req, res) {
+    let chaves = req.query.chaves;
+    let reqst = `${BASE_API}/palavra-chave?chave=${chaves}`;
+    let settings = {method: "GET"};
+    if (req != undefined) {
+        fetch(reqst, settings)
         .then(res => res.json())
         .then((consultaRet) => {
-            res.render('buscarespostas', { chaves: chaves });
-            console.log(chaves);
+            //res.render('home', { chaves: chaves });
+            res.render('home', { buscarpalavraschave: "Nenhum resultado encontrado" });
         });
-}*/
-
-
-
-
-app.get("/", function (req, res) {
-    let chaves = req.body.chaves;
-    let reqst = `${BASE_API}/resposta?chave=${chaves}`;
-    let settings = {method: "GET"};
-    if (req == "null") {
-
     } else {
-        
-        
         fetch(reqst, settings)
-            .then(res => res.json())
-            .then((consultaRet) => {
-                res.render('home', { chaves: chaves });
-                //console.log(chaves);
-            });
+        .then(res => res.json())
+        .then((consultaRet) => {
+            res.render('home', { buscarpalavraschave: "Nenhum resultado encontrado" });
+
+        });
+       
     }
 })
 
 app.get("/buscapalavraschave", function (req, res) {
     const titulo = `Palavras chave`;
-    let chaves = req.body.chave;
-    //console.log(chaves);
-    let reqst = `${BASE_API}/resposta?chave=${chaves}`;
+    let chaves = req.query.chave;
+    console.log(chaves);
+    let reqst = `${BASE_API}/palavra-chave?chave=${chaves}`;
     let settings = { method: "GET" };
     fetch(reqst, settings)
         .then(res => res.json())
         .then((consultaRet) => {
-            let chaves = consultaRet;
-                res.render('home', { chaves: chaves, titulo} );
-                
-            
-        //        res.render('home', { "Nenhum resultado encontrado": chaves, titulo} );
-        
+            console.log(consultaRet);
+            if(consultaRet != undefined && consultaRet != "" &&  consultaRet != null){
+                res.render('buscarpalavraschave', { chaves: consultaRet, titulo} );
+                //res.render('buscarpalavraschave', { resultado: "Nenhum resultado encontrado", titulo} );
+            }else{
+                res.render('buscarpalavraschave', { resultado: "Nenhum resultado encontrado", titulo} );
+    }
             //console.log(chaves);
         });
 
@@ -138,7 +125,6 @@ app.post("/executarcadkeyword", function (req, res) {
     fetch(reqst,settings)
         .then(res => res.json())
         .then(res.render("buscarespostas", { chave: chave, titulo }))
-    //console.log(` Chave: ${chave}`);
 })
 
 app.listen(8081, function () {

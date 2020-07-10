@@ -1,0 +1,17 @@
+<h1>Buscar palavras chave:</h1>
+<form id="buscar_palavraschave" action="/buscapalavraschave" method="GET">
+
+  <div class="input-group mb-3">
+    <input id="formbuscachave" type="text" class="form-control" aria-label="Default" name="chave"
+      placeholder="Buscar palavras chave" aria-describedby="inputGroup-sizing-default">
+  </div>
+  <button class="btn btn-secondary" type="submit">Buscar</button>
+</form>
+
+<h2>{{resultado}}</h2>
+
+{{#each chaves}}
+<h2> {{chave}} </h2>
+
+<hr>
+{{/each}}
