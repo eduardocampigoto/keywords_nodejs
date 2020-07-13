@@ -71,6 +71,27 @@ app.get("/buscapalavraschave", function (req, res) {
 
 })
 
+app.get("/buscaintegrapalavraschave", function (req, res) {
+    const titulo = `Palavras chave`;
+    let consulta = req.query.chave;
+    console.log(consulta);
+    let reqst = `${BASE_API}/palavra-chave/${consulta}`;
+    let settings = { method: "GET" };
+    fetch(reqst, settings)
+        .then(res => res.json())
+        .then((consultaRet) => {
+            console.log(consultaRet);
+            if (consultaRet && consultaRet != []) {
+                res.render('cadastroRespostas', { chaves: consultaRet, titulo });
+            } else if (!consultaRet || consultaRet.trim()) {
+                res.render('cadastroRespostas', { resultado: "Nenhum resultado encontrado", titulo });
+
+            }
+            //console.log(chaves);
+        });
+
+})
+
 app.get("/cadastrarrespostas", function (req, res) {
     const titulo = `Integrar respostas e palavras chave`;
     let chaves = req.body.chaves;

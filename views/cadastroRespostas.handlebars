@@ -1,7 +1,25 @@
-<form id="cadastro_resposta" method="POST" action="/executacadastroRespostas">
+<br>
+<form id="cadastro_resposta" method="GET" action="/buscaintegrapalavraschave">
 
 <div class="input-group mb-3">
   <input  id="chaveinput" type="text" class="form-control" aria-label="Default" name="chave" placeholder="Buscar palavras chave para atribuir a resposta" aria-describedby="inputGroup-sizing-default">
+</div>
+<button class="btn btn-secondary" type="submit">Buscar</button>
+</form>
+<br>
+
+
+<form id="cadastro_resposta" method="POST" action="/executacadastroRespostas">
+
+<div class="input-group mb-3" name="chave">
+  <input  id="chaveinput" type="text" class="form-control" aria-label="Default" name="chave" placeholder="Buscar palavras chave para atribuir a resposta" aria-describedby="inputGroup-sizing-default"
+  
+  value= '{{resultado}}
+
+{{#each chaves}}
+{{this}}
+{{/each}}'
+>
 </div>
 
 <div class="input-group mb-3">
