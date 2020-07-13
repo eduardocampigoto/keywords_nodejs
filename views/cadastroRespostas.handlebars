@@ -1,7 +1,7 @@
 <form id="cadastro_resposta" method="POST" action="/executacadastroRespostas">
 
 <div class="input-group mb-3">
-  <input type="text" class="form-control" aria-label="Default" name="chave" placeholder="Buscar palavras chave para atribuir a resposta" aria-describedby="inputGroup-sizing-default">
+  <input  id="chaveinput" type="text" class="form-control" aria-label="Default" name="chave" placeholder="Buscar palavras chave para atribuir a resposta" aria-describedby="inputGroup-sizing-default">
 </div>
 
 <div class="input-group mb-3">
@@ -9,3 +9,6 @@
 </div>
 <button class="btn btn-secondary" type="submit">Cadastrar</button>
 </form>
+{{#each scripts}}
+<script src=`{{script}}`></script>
+{{/each}}
