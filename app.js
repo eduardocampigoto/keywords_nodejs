@@ -87,7 +87,7 @@ app.post("/executa-cadastro-respostas", function (req, res) {
             .then(res.redirect("/cadastrar-respostas"));
     } else {
         const resultado = "Só podem ser cadastradas 8 palavras chave por resposta";
-        res.render(`/cadastrar-respostas?resultado=${resultado}`);
+        res.redirect(`/cadastrar-respostas?resultado=${resultado}`);
     }
 })
 
