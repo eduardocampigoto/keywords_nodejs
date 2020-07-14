@@ -1,5 +1,5 @@
 <h1>Digite a palavra chave para procurar pelas respostas</h1>
-<form id="buscar_respostas" action="/buscarrespostas" method="GET">
+<form id="buscar_respostas" action="/buscar-respostas" method="GET">
 
   <div class="input-group mb-3">
     <input id="formbuscachave" type="text" class="form-control" aria-label="Default" name="chave"
@@ -7,9 +7,14 @@
   </div>
   <button class="btn btn-secondary" type="submit">Buscar</button>
 </form>
+<br>
 {{resultado}}
 {{#each chaves}}
-<h2> {{keyword}} </h2>
-<h2> {{response}} </h2>
+  <p>Palavras chave: 
+  {{#each keyword}}
+ {{this}},
+  {{/each}}
+   </p>
+  <h3> Resposta: {{response}} </h3>
 <hr>
 {{/each}}

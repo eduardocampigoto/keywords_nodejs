@@ -1,181 +1,155 @@
-//REQUIRES
 const express = require('express');
+
 const handlebars = require('express-handlebars')
 const bodyparser = require('body-parser');
 const http = require('http');
 const request = require('request');
 const fetch = require('node-fetch');
 const { debug } = require('console');
-
-
-
-
-//const bootstrap = require('bootstrap');
-//Express
 const app = express();
-//MODULES
-//Config
-//Template Engine
+
 app.engine('handlebars', handlebars({ defaultLayout: 'main', allowProtoMethodsByDefault: true }))
 app.set('view engine', 'handlebars')
-//Body Parser
-app.use('/controllers', express.static(__dirname + '/Controllers'));
 app.use('/frameworks', express.static(__dirname + '/node_modules/jquery/dist'));
+app.use('/bootstrap-select', express.static(__dirname + '/node_modules/bootstrap-select'));
+app.use('/popper', express.static(__dirname + '/node_modules/popper.js/dist'));
 app.use(bodyparser.urlencoded({ extended: false }));
 app.use(bodyparser.json());
 
-//App home
 const BASE_API = "http://localhost:8080/api";
-
+const getSettings = { method: "GET" };
+const postSettings = { method: 'POST' };
 
 app.get("/", function (req, res) {
-    let chaves = req.query.chaves;
-    let reqst = `${BASE_API}/palavra-chave?chave=${chaves}`;
-    let scripts = "/frameworks/jquery.js"
-    let settings = { method: "GET" };
-    if (req != undefined) {
-        fetch(reqst, settings)
-            .then(res => res.json())
-            .then((consultaRet) => {
-                res.render('home', { buscarpalavraschave: "Nenhum resultado encontrado", scripts });
-            });
-    } else {
-        fetch(reqst, settings)
-            .then(res => res.json())
-            .then((consultaRet) => {
-                res.render('home', { buscarpalavraschave: "Nenhum resultado encontrado", scripts });
 
-            });
+    res.render('home', { hometexto: "Pagina inicial" });
 
-    }
 })
 
-app.get("/buscapalavraschave", function (req, res) {
+app.get("/buscar-palavras-chave", function (req, res) {
+
     const titulo = `Palavras chave`;
-    let consulta = req.query.chave;
-    console.log(consulta);
-    let reqst = `${BASE_API}/palavra-chave/${consulta}`;
-    let settings = { method: "GET" };
-    fetch(reqst, settings)
+    const consulta = req.query.chave;
+    const reqst = `${BASE_API}/palavra-chave/${consulta}`;
+
+    fetch(reqst, getSettings)
         .then(res => res.json())
         .then((consultaRet) => {
-            console.log(consultaRet);
-            if (consultaRet && consultaRet != []) {
-                res.render('buscarpalavraschave', { chaves: consultaRet, titulo });
-            } else if (!consultaRet || consultaRet.trim()) {
-                res.render('buscarpalavraschave', { resultado: "Nenhum resultado encontrado", titulo });
+
+            if (consultaRet && consultaRet.length) {
+
+                res.render('buscapalavraschave', { chaves: consultaRet, titulo });
+
+            } else {
+
+                res.render('buscapalavraschave', { resultado: "Nenhum resultado encontrado", titulo });
 
             }
-            //console.log(chaves);
         });
 
 })
 
-app.get("/buscaintegrapalavraschave", function (req, res) {
+app.get("/cadastrar-respostas", function (req, res) {
+
     const titulo = `Palavras chave`;
-    let consulta = req.query.chave;
-    console.log(consulta);
-    let reqst = `${BASE_API}/palavra-chave/${consulta}`;
-    let settings = { method: "GET" };
-    fetch(reqst, settings)
+    const reqst = `${BASE_API}/palavra-chave`;
+
+    fetch(reqst, getSettings)
         .then(res => res.json())
         .then((consultaRet) => {
-            console.log(consultaRet);
-            if (consultaRet && consultaRet != []) {
+            
+            if (consultaRet && consultaRet.length) {
+                console.log(consultaRet);    
                 res.render('cadastroRespostas', { chaves: consultaRet, titulo });
-            } else if (!consultaRet || consultaRet.trim()) {
+
+            } else {
+
                 res.render('cadastroRespostas', { resultado: "Nenhum resultado encontrado", titulo });
 
             }
-            //console.log(chaves);
+
         });
 
 })
 
-app.get("/cadastrarrespostas", function (req, res) {
+app.post("/executa-cadastro-respostas", function (req, res) {
+    debugger;
     const titulo = `Integrar respostas e palavras chave`;
-    let chaves = req.body.chaves;
-    let scripts = ["/controllers/cadastraRespostas.js", "/frameworks/jquery.js"]
-    res.render('cadastroRespostas', { consultaRet: chaves, titulo, scripts });
-})
+    const chave = req.body.chave;
+    const resposta = req.body.resposta;
+    const reqst = `${BASE_API}/resposta?chave=${chave}&resposta=${resposta}`
 
-app.post("/executacadastrorespostas", function (req, res) {
-    const titulo = `Integrar respostas e palavras chave`;
-    let scripts = ["/controllers/cadastraRespostas.js", "/frameworks/jquery.js"]
-    let chave = req.body.chave;
-    let resposta = req.body.resposta;
-    let reqst = `${BASE_API}/resposta?chave=${chave}&resposta=${resposta}`
-    let settings = { method: 'POST' };
-    fetch(reqst, settings)
+    fetch(reqst, postSettings)
         .then(res => res.json())
-        .then(res.render("cadastroRespostas", { chave: chave, titulo, scripts }))
-    console.log(`
-    Chave: ${chave}
-    Resposta atribuida: ${resposta}
-    `);
+        .then(res.redirect("/cadastrar-respostas"));
 })
 
-app.get("/buscarespostas", function (req, res) {
-    const titulo = `Buscar respostas`;
-    res.render('buscarespostas', { titulo });
-})
+app.get("/buscar-respostas", function (req, res) {
 
-app.get("/buscarrespostas", function (req, res) {
+    const chave = req.query.chave;
 
-    // quando usa GET, pega parametro via req.query.nomeparametro
-    // quando usa POST, pega parametro via req.body.nomeparametro (se vier do form) 
-    // e req.query.nomeparametro se viar via querystring (acho que eh isso)
-    var chave = req.query.chave;
     if (chave != undefined) {
-        let reqst = `${BASE_API}/resposta/${chave}`;
-        console.log(reqst);
-        let settings = { method: "GET" };
-        fetch(reqst, settings)
+
+        const reqst = `${BASE_API}/resposta/${chave}`;
+        console.log(chave);
+        fetch(reqst, getSettings)
             .then(res => res.json())
             .then((consultaRet) => {
-                if (chave.trim()) {
-                    res.render('buscarespostas', { chaves: consultaRet });
+
+                if (consultaRet && consultaRet.length) {
+                    console.log(consultaRet);
+                    
+                    res.render('buscarrespostas', { chaves: consultaRet });
+
                 } else {
-                    res.render('buscarespostas', { resultado: "Nenhum resultado encontrado" });
+
+                    res.render('buscarrespostas', { resultado: "Nenhum resultado encontrado" });
+
                 }
             });
     } else {
-        res.render('buscarespostas', { resultado: "Preencha o campo e clique em buscar" });
+
+        res.render('buscarrespostas', { resultado: "Preencha o campo e clique em buscar" });
+
     }
 })
 
-app.get("/cadastrarkeyword", function (req, res) {
-    const titulo = `Cadastrar palavras chave`;
-    res.render('cadastroPalavrasChave', { titulo });
-    debugger;
+app.get("/cadastrar-palavra-chave", function (req, res) {
+
+    res.render('cadastroPalavrasChave', { titulo: "Cadastrar Palavras chave" });
+
 })
 
-app.post("/executarcadkeyword", function (req, res) {
+
+app.post("/cadastrar-palavra-chave", function (req, res) {
+
     const titulo = `Cadastrar palavras chave`;
-    let chavelst = req.body.chave;
+    const chavelst = req.body.chave;
+
     if (chavelst != undefined || caveslst[0] != '') {
-        var chavespt = chavelst.split(" ");
-        console.log(chavespt);
-        res.render('cadastroPalavrasChave', { titulo });
+
+        const chavespt = chavelst.split(" ");
 
         try {
-            chavespt.forEach(elemento => {
-                console.log(elemento);
-                let reqst = `${BASE_API}/palavra-chave?chave=${elemento}`
-                let settings = { method: 'POST' };
 
-                fetch(reqst, settings)
-                    .then(res => res.json())
-                    .then(res.render("cadastroPalavrasChave", { titulo }))
-            });
+            const reqst = `${BASE_API}/palavra-chave?chave=${chavespt}`
+
+            fetch(reqst, postSettings)
+                .then(res => res.json())
+                .then(res.render("cadastroPalavrasChave", { titulo }))
+        
 
         } catch (error) {
+
             console.log(error);
+
         }
-    }else{
+
+    } else {
+
         fetch(reqst, settings)
-                    .then(res => res.json())
-                    .then(res.render("cadastrarkeyword", { titulo, resultado: "O campo de cadastro não pode estar vazio, preencha-o e tente novamente" }))
+            .then(res => res.json())
+            .then(res.render("cadastrarkeyword", { titulo, resultado: "O campo de cadastro não pode estar vazio, preencha-o e tente novamente" }))
     }
 })
 
