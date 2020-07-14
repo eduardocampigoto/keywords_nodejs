@@ -78,6 +78,7 @@ app.post("/executa-cadastro-respostas", function (req, res) {
     const titulo = `Integrar respostas e palavras chave`;
     const chave = req.body.chave;
     const resposta = req.body.resposta;
+    
     const reqst = `${BASE_API}/resposta?chave=${chave}&resposta=${resposta}`
     if (chave != undefined && chave.length <= 8) {
 
@@ -88,7 +89,7 @@ app.post("/executa-cadastro-respostas", function (req, res) {
         const resultado = encodeURIComponent("Só podem ser cadastradas 8 palavras chave por resposta");
         let nResposta = encodeURIComponent(resposta);
         let nChave = encodeURIComponent(chave);
-        res.render("cadastroRespostasAlert");
+        res.render(`/cadastrar-respostas?resultado=${resultado}`);
     }
 })
 
