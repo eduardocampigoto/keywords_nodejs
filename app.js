@@ -54,7 +54,7 @@ app.get("/cadastrar-respostas", function (req, res) {
 
     const titulo = `Cadastro de respostas`;
     const reqst = `${BASE_API}/palavra-chave`;
-    const resultado = req.body.resultado;
+    const resultado = req.query.resultado;
 
     fetch(reqst, getSettings)
         .then(res => res.json())
