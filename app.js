@@ -2,11 +2,13 @@ const express = require('express');
 
 const handlebars = require('express-handlebars')
 const bodyparser = require('body-parser');
-const http = require('https');
-const options = {
-    key: fs.readFileSync('key.pem'),
-    cert: fs.readFileSync('cert.pem')
-  };
+const fs = require('fs');
+const http = require('http');
+const https = require('https');
+
+let privatekey = fs.readFileSync(__dirname+'/key.pem','utf8');
+let certificate =  fs.readFileSync(__dirname+'/cert.pem','utf8');
+let credentials = { key:privatekey, cert: certificate};
   
 const request = require('request');
 const fetch = require('node-fetch');
@@ -165,10 +167,16 @@ app.post("/cadastrar-palavra-chave", function (req, res) {
             .then(res.render("cadastrarkeyword", { titulo, resultado: "O campo de cadastro não pode estar vazio, preencha-o e tente novamente" }))
     }
 })
-
+/*
 app.listen(8081, function () {
     console.log(`------------------------------------
 | Aplicativo iniciado corretamente |
 ------------------------------------`);
 })
-module.exports = app;
+
+module.exports = app;*/
+var httpServer = http.createServer(app);
+var httpsServer = https.createServer(credentials, app);
+
+httpServer.listen(80);
+httpsServer.listen(443);
