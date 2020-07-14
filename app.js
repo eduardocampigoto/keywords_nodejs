@@ -181,7 +181,7 @@ http.createServer(app).listen(process.env.PORT || 80, function(){
     ------------------------------------
     HTTP`);
 });
-https.createServer(credentials, app).listen(process.env.PORT || 443, function(){
+https.createServer(credentials, app).listen( 443, function(){
     console.log(`------------------------------------
     | Aplicativo iniciado corretamente |
     ------------------------------------
