@@ -175,13 +175,13 @@ app.listen(8081, function () {
 })
 */
 
-http.createServer(app).listen(8080, function(){
+http.createServer(app).listen(80, function(){
     console.log(`------------------------------------
     | Aplicativo iniciado corretamente |
     ------------------------------------
     HTTP`);
 });
-https.createServer(credentials, app).listen(8443, function(){
+https.createServer(credentials, app).listen(443, function(){
     console.log(`------------------------------------
     | Aplicativo iniciado corretamente |
     ------------------------------------
