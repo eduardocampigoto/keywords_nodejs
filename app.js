@@ -174,9 +174,18 @@ app.listen(8081, function () {
 ------------------------------------`);
 })
 */
-var httpServer = http.createServer(app);
-var httpsServer = https.createServer(credentials, app);
 
-httpServer.listen(80);
-httpsServer.listen(443);
+http.createServer(app).listen(8080, function(){
+    console.log(`------------------------------------
+    | Aplicativo iniciado corretamente |
+    ------------------------------------
+    HTTP`);
+});
+https.createServer(credentials, app).listen(8443, function(){
+    console.log(`------------------------------------
+    | Aplicativo iniciado corretamente |
+    ------------------------------------
+    HTTPS`);
+});
+
 module.exports = app;
