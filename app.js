@@ -16,7 +16,7 @@ app.use('/popper', express.static(__dirname + '/node_modules/popper.js/dist'));
 app.use(bodyparser.urlencoded({ extended: false }));
 app.use(bodyparser.json());
 
-const BASE_API = "http://localhost:8080/api";
+const BASE_API = " https://aceville.herokuapp.com/api";
 const getSettings = { method: "GET" };
 const postSettings = { method: 'POST' };
 
