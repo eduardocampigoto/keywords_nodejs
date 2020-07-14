@@ -2,7 +2,12 @@ const express = require('express');
 
 const handlebars = require('express-handlebars')
 const bodyparser = require('body-parser');
-const http = require('http');
+const http = require('https');
+const options = {
+    key: fs.readFileSync('key.pem'),
+    cert: fs.readFileSync('cert.pem')
+  };
+  
 const request = require('request');
 const fetch = require('node-fetch');
 const { debug } = require('console');
