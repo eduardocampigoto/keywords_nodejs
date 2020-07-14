@@ -21,8 +21,9 @@ const getSettings = { method: "GET" };
 const postSettings = { method: 'POST' };
 
 app.get("/", function (req, res) {
-
-    res.render('home', { hometexto: "Pagina inicial" });
+   
+    
+    res.render('home');
 
 })
 
@@ -42,7 +43,7 @@ app.get("/buscar-palavras-chave", function (req, res) {
 
             } else {
 
-                res.render('buscapalavraschave', { resultado: "Nenhum resultado encontrado", titulo });
+                res.render('buscapalavraschave', { resultado: ": Nenhum resultado encontrado", titulo });
 
             }
         });
@@ -51,20 +52,21 @@ app.get("/buscar-palavras-chave", function (req, res) {
 
 app.get("/cadastrar-respostas", function (req, res) {
 
-    const titulo = `Palavras chave`;
+    const titulo = `Cadastro de respostas`;
     const reqst = `${BASE_API}/palavra-chave`;
-
+    const resultado = req.body.resultado;
+    console.log(resultado);
     fetch(reqst, getSettings)
         .then(res => res.json())
         .then((consultaRet) => {
             
             if (consultaRet && consultaRet.length) {
-                console.log(consultaRet);    
-                res.render('cadastroRespostas', { chaves: consultaRet, titulo });
+                
+                res.render('cadastroRespostas', { chaves: consultaRet, resultado: resultado, titulo });
 
             } else {
 
-                res.render('cadastroRespostas', { resultado: "Nenhum resultado encontrado", titulo });
+                res.render('cadastroRespostas', { resultado: ": Nenhum resultado encontrado", titulo });
 
             }
 
@@ -73,15 +75,21 @@ app.get("/cadastrar-respostas", function (req, res) {
 })
 
 app.post("/executa-cadastro-respostas", function (req, res) {
-    debugger;
     const titulo = `Integrar respostas e palavras chave`;
     const chave = req.body.chave;
     const resposta = req.body.resposta;
     const reqst = `${BASE_API}/resposta?chave=${chave}&resposta=${resposta}`
-
+    if(chave != undefined && chave.length <= 8){
+        
     fetch(reqst, postSettings)
         .then(res => res.json())
         .then(res.redirect("/cadastrar-respostas"));
+    }else{
+        const resultado = encodeURIComponent("Só podem ser cadastradas 8 palavras chave por resposta");
+        let nResposta = encodeURIComponent(resposta);
+        let nChave = encodeURIComponent(chave);
+        res.redirect("/cadastrar-respostas");
+    }
 })
 
 app.get("/buscar-respostas", function (req, res) {

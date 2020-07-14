@@ -1,16 +1,15 @@
-<br>
+<h2 style="margin-top:20px;">Cadastro de Respostas</h2>
+<div style="color:blue">Selecione até 8 palavras chave no campo abaixo, digite uma frase de resposta e clique em cadastrar para concluir o cadastro</div>
 <form id="cadastro_resposta" method="POST" action="/executa-cadastro-respostas">
 
 <div class="input-group mb-3">
   <select  multiple id="chaveinput" type="text" class="form-control selectpicker" aria-label="Default" name="chave" aria-describedby="inputGroup-sizing-default">
-  
 {{#each chaves}}
 <option id='{{this}}'>{{this}}</option>
 {{/each}}'
 </select>
-
 </div>
-
+<div style="color:red">{{resultado}}</div>
 <div class="input-group mb-3">
   <input type="text" class="form-control" aria-label="Default" name="resposta" placeholder="Cadastrar resposta para as chaves escolhidas" aria-describedby="inputGroup-sizing-default">
 </div>

@@ -1,20 +1,21 @@
-<h1>Digite a palavra chave para procurar pelas respostas</h1>
+<h2 style="margin-top:20px;">Digite a palavra chave para encontrar os textos vínculados</h1>
 <form id="buscar_respostas" action="/buscar-respostas" method="GET">
 
   <div class="input-group mb-3">
     <input id="formbuscachave" type="text" class="form-control" aria-label="Default" name="chave"
-      placeholder="Buscar palavras chave para atribuir a resposta" aria-describedby="inputGroup-sizing-default">
+      placeholder="Digite aqui as palavras chave" aria-describedby="inputGroup-sizing-default">
   </div>
   <button class="btn btn-secondary" type="submit">Buscar</button>
 </form>
 <br>
 {{resultado}}
 {{#each chaves}}
-  <p>Palavras chave: 
+  <div style="margin-left: 10px; margin-top: 20px;">Palavras chave: 
   {{#each keyword}}
- {{this}},
+ {{this}} - 
   {{/each}}
-   </p>
-  <h3> Resposta: {{response}} </h3>
-<hr>
+   
+  <div style="font-style: boldest; font-size: 20px;"> Resposta: {{response}} </div>
+</div>
+
 {{/each}}
