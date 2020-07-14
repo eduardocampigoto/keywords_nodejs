@@ -173,10 +173,10 @@ app.listen(8081, function () {
 | Aplicativo iniciado corretamente |
 ------------------------------------`);
 })
-
-module.exports = app;*/
+*/
 var httpServer = http.createServer(app);
 var httpsServer = https.createServer(credentials, app);
 
-httpServer.listen(8080);
-httpsServer.listen(8043);
+httpServer.listen(80);
+httpsServer.listen(443);
+module.exports = app;
