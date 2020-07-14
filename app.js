@@ -86,9 +86,7 @@ app.post("/executa-cadastro-respostas", function (req, res) {
             .then(res => res.json())
             .then(res.redirect("/cadastrar-respostas"));
     } else {
-        const resultado = encodeURIComponent("Só podem ser cadastradas 8 palavras chave por resposta");
-        let nResposta = encodeURIComponent(resposta);
-        let nChave = encodeURIComponent(chave);
+        const resultado = "Só podem ser cadastradas 8 palavras chave por resposta";
         res.render(`/cadastrar-respostas?resultado=${resultado}`);
     }
 })
