@@ -175,17 +175,17 @@ app.listen(8081, function () {
 })
 */
 
-http.createServer(app).listen(process.env.PORT || 80, function(){
+http.createServer(app).listen(process.env.PORT || 3500, function(){
     console.log(`------------------------------------
     | Aplicativo iniciado corretamente |
     ------------------------------------
     HTTP`);
 });
-https.createServer(credentials, app).listen( 443, function(){
+/*https.createServer(credentials, app).listen( 443, function(){
     console.log(`------------------------------------
     | Aplicativo iniciado corretamente |
     ------------------------------------
     HTTPS`);
-});
+});*/
 
 module.exports = app;
