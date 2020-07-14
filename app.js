@@ -88,7 +88,7 @@ app.post("/executa-cadastro-respostas", function (req, res) {
         const resultado = encodeURIComponent("Só podem ser cadastradas 8 palavras chave por resposta");
         let nResposta = encodeURIComponent(resposta);
         let nChave = encodeURIComponent(chave);
-        res.redirect("/cadastrar-respostas");
+        res.render("cadastroRespostasAlert");
     }
 })
 
